@@ -1,10 +1,25 @@
 /**
- * Replace the given input with a ChromaPassword widget
- *
- * - Original input is kept, and receives the input, but is hidden from view
+ *  Replace the given input with a ChromaPassword widget
+ *  - Original input is kept, and receives the input, but is hidden from view
  * 
- * requires a sha1() hash function
- */
+ *  requires a sha1() hash function
+ * 
+ *  Copright 2012-2013 Richard Gomer - richard@xebre.net
+ * 
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
 function ChromaPassword(input)
 {
 	var self = this;
@@ -97,14 +112,8 @@ function ChromaPassword(input)
 	{
 		self.salt = salt;
 		
-		var setBlock = function(blocknum, triplet)
-		{
-			// This shouldn't really go here, but it makes changing the salt easier!
-			self.blocks[blocknum].style.background = self.tripletToHex(self.scaleTriplet(triplet));
-		}
-		
-		if(self.blocks.length > 0)
-			self.getColour(self.blocks.length - 1, setBlock);
+                self.remove(self.chars.length); // Remove old blocks
+		self.update(input.value); // Recreate using the new salt
 	}
 	
 	/**
@@ -129,7 +138,7 @@ function ChromaPassword(input)
 	{	
 		var char = self.chars[blocknum];
 		
-		// Concat salt with existing chars and sha1 hash		
+		// Concat salt with existing chars and calculate sha1 hash		
 		hash = sha1(self.salt + self.chars.slice(0,blocknum).join('') + char);
 		
 		// Recursive colouring - Offset from the previous one to give a nicer set
@@ -239,7 +248,6 @@ function ChromaPassword(input)
 	 */
 	
 	// Add new element
-	
 	self.element = document.createElement('div');
 	input.parentNode.insertBefore(self.element, input);
 	self.element.appendChild(input);
