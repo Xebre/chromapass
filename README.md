@@ -11,7 +11,11 @@ usage
 -----
 
 // Turn the given element into a chromaPass input
+
 var cp = new ChromaPassword(document.getElementById('cpass'));
 
+
+
 // Salt the string used to compute colours with the username
+
 document.getElementById('username').onchange = function(){cp.setSalt(this.value);};
